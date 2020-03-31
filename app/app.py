@@ -217,7 +217,8 @@ def parse_reviews(count, session, url):
 
             elif count == 2:
                 l2.append(val)
-                
+    l1[0:] = ['. '.join(l1[0:])]    
+    l2[0:] = ['. '.join(l2[0:])]         
     print("This is l1              ",l1)
     print("This is l2              ",l2)
     return items
