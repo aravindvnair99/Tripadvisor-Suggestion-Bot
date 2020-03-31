@@ -22,9 +22,9 @@ def sentiment_scores(sentence, count):
     print("sentence was rated as ", sentiment_dict['neg']*100, "% Negative")
     print("sentence was rated as ", sentiment_dict['neu']*100, "% Neutral")
     print("sentence was rated as ", sentiment_dict['pos']*100, "% Positive")
-    print("In function             ",count)
+    print("In function             ", count)
     print("Sentence Overall Rated As", end=" ")
-    
+
     # decide sentiment as positive, negative and neutral
     if sentiment_dict['compound'] >= 0.05:
         print("Positive")
@@ -81,7 +81,7 @@ def scrape(count, url, lang='ALL'):
     return items
 
 
-def parse(count,session, url):
+def parse(count, session, url):
     '''Get number of reviews and start getting subpages with reviews'''
 
     print('[parse] url:', url)
@@ -112,7 +112,7 @@ def parse(count,session, url):
     while(True):
         subpage_url = url_template.format(offset)
 
-        subpage_items = parse_reviews(count,session, subpage_url)
+        subpage_items = parse_reviews(count, session, subpage_url)
         if not subpage_items:
             break
 
@@ -157,6 +157,7 @@ def get_more(session, reviews_ids):
 
 l1 = []
 l2 = []
+
 
 def parse_reviews(count, session, url):
     '''Get all reviews from one page'''
@@ -209,7 +210,7 @@ def parse_reviews(count, session, url):
         }
 
         items.append(item)
-        print('\n--- review ---\n')
+        # print('\n--- review ---\n')
         for key, val in item.items():
             #print(' ', key, ':', val)
             if count == 1:
@@ -217,10 +218,8 @@ def parse_reviews(count, session, url):
 
             elif count == 2:
                 l2.append(val)
-    l1[0:] = ['. '.join(l1[0:])]    
-    l2[0:] = ['. '.join(l2[0:])]         
-    print("This is l1              ",l1)
-    print("This is l2              ",l2)
+    l1[0:] = ['. '.join(l1[0:])]
+    l2[0:] = ['. '.join(l2[0:])]
     return items
 
 
@@ -258,20 +257,23 @@ headers = [
 count = 0
 
 for url in start_urls:
-    count = count + 1
+    count += 1
     # get all reviews for 'url' and 'lang'
     items = scrape(count, url, lang)
 
     if not items:
         print('No reviews')
     else:
-        print("\n\nItems are")
-        print(count)
-        for d in items:
-            for i in d:
-                if i != "review_date":
-                    sentiment_scores(d[i], count)
+        print("\n\nNo of accomodations to compare: ", count)
+        # for d in items:
+        #     for i in d:
+        #         if i != "review_date":
+        #             sentiment_scores(d[i], count)
         # For generating CSV uncomment this
         # filename = url.split('Reviews-')[1][:-5] + '__' + lang
         # print('filename:', filename)
         # write_in_csv(items, filename + '.csv', headers, mode='w')
+
+print("\n\n\n\n")
+print(sentiment_scores(l1[0], 1))
+print(sentiment_scores(l2[0], 2))
