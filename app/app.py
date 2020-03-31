@@ -8,8 +8,7 @@ from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 # Sentiment Analysis
 
 
-def sentiment_scores(sentence):
-
+def sentiment_scores(sentence, count):
     # Create a SentimentIntensityAnalyzer object.
     sid_obj = SentimentIntensityAnalyzer()
 
@@ -23,9 +22,9 @@ def sentiment_scores(sentence):
     print("sentence was rated as ", sentiment_dict['neg']*100, "% Negative")
     print("sentence was rated as ", sentiment_dict['neu']*100, "% Neutral")
     print("sentence was rated as ", sentiment_dict['pos']*100, "% Positive")
-
+    print("In function             ",count)
     print("Sentence Overall Rated As", end=" ")
-
+    
     # decide sentiment as positive, negative and neutral
     if sentiment_dict['compound'] >= 0.05:
         print("Positive")
@@ -70,7 +69,7 @@ def post_soup(session, url, params, show=False):
         return BeautifulSoup(r.text, 'html.parser')
 
 
-def scrape(url, lang='ALL'):
+def scrape(count, url, lang='ALL'):
 
     # create session to keep all cookies (etc.) between requests
     session = requests.Session()
@@ -78,11 +77,11 @@ def scrape(url, lang='ALL'):
     session.headers.update({
         'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:57.0) Gecko/20100101 Firefox/57.0',
     })
-    items = parse(session, url + '?filterLang=' + lang)
+    items = parse(count, session, url + '?filterLang=' + lang)
     return items
 
 
-def parse(session, url):
+def parse(count,session, url):
     '''Get number of reviews and start getting subpages with reviews'''
 
     print('[parse] url:', url)
@@ -113,7 +112,7 @@ def parse(session, url):
     while(True):
         subpage_url = url_template.format(offset)
 
-        subpage_items = parse_reviews(session, subpage_url)
+        subpage_items = parse_reviews(count,session, subpage_url)
         if not subpage_items:
             break
 
@@ -156,7 +155,10 @@ def get_more(session, reviews_ids):
     return soup
 
 
-def parse_reviews(session, url):
+l1 = []
+l2 = []
+
+def parse_reviews(count, session, url):
     '''Get all reviews from one page'''
 
     print('[parse_reviews] url:', url)
@@ -204,17 +206,20 @@ def parse_reviews(session, url):
 
         item = {
             'review_body': review.find('p', class_='partial_entry').text,
-            # 'ratingDate' instead of 'relativeDate'
-            'review_date': review.find('span', class_='ratingDate')['title'],
         }
 
         items.append(item)
-        # print('\n--- review ---\n')
-        # for key, val in item.items():
-        #     print(' ', key, ':', val)
+        print('\n--- review ---\n')
+        for key, val in item.items():
+            #print(' ', key, ':', val)
+            if count == 1:
+                l1.append(val)
 
-    print()
-
+            elif count == 2:
+                l2.append(val)
+                
+    print("This is l1              ",l1)
+    print("This is l2              ",l2)
     return items
 
 
@@ -249,19 +254,22 @@ headers = [
     DB_COLUMN1,
 ]
 
-for url in start_urls:
+count = 0
 
+for url in start_urls:
+    count = count + 1
     # get all reviews for 'url' and 'lang'
-    items = scrape(url, lang)
+    items = scrape(count, url, lang)
 
     if not items:
         print('No reviews')
     else:
         print("\n\nItems are")
+        print(count)
         for d in items:
             for i in d:
                 if i != "review_date":
-                    sentiment_scores(d[i])
+                    sentiment_scores(d[i], count)
         # For generating CSV uncomment this
         # filename = url.split('Reviews-')[1][:-5] + '__' + lang
         # print('filename:', filename)
