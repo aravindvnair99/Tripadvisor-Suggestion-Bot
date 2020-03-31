@@ -8,7 +8,7 @@ from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 # Sentiment Analysis
 
 
-def sentiment_scores(sentence, count):
+def sentiment_scores(sentence):
     # Create a SentimentIntensityAnalyzer object.
     sid_obj = SentimentIntensityAnalyzer()
 
@@ -275,5 +275,5 @@ for url in start_urls:
         # write_in_csv(items, filename + '.csv', headers, mode='w')
 
 print("\n\n\n\n")
-print(sentiment_scores(l1[0], 1))
-print(sentiment_scores(l2[0], 2))
+print(sentiment_scores(l1[0]))
+print(sentiment_scores(l2[0]))
