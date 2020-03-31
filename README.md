@@ -1,6 +1,14 @@
-# Natural Language Processing Project
+# Trip Advisor Reviews Sentiment Analyser
 
-Helps you make decisions based on reviews.
+Sentiment Analysis is one of the major applications of NLP and has gained much attention in recent years. The main objective of this project is to collect data from Trip Advisor, a travel website to suggest the best accommodation based on the reviews given by previous customers.
+
+We start off by web scraping reviews on Trip Advisor based on input URLs to generate our own dataset. The data is then cleaned and processed for good, neutral and bad reviews by sentiment analysis, thus comparing different choices and suggesting the best one of the lot in order to help customers choose the best accommodation.
+
+# Goals
+
+- **Faster decision making:** Analysing reviews is now made easier by performing sentiment analysis in an automated manner.
+- **Time-saving:** Rather than going through pages of reviews, this tool helps to automate the whole process and get the result in a matter of seconds.
+- **Simplicity:** The app is straightforward and simple to use. URLs can be given as input and the best one of the lot is given as output.
 
 # :fast_forward: Get started
 

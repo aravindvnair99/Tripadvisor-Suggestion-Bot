@@ -5,4 +5,3 @@ pip install virtualenv
 virtualenv virtualenv
 . virtualenv/Scripts/activate
 pip install -r requirements.txt
-#python -m nltk.downloader all
