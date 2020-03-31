@@ -1,8 +1,8 @@
-# Trip Advisor Reviews Sentiment Analyser
+# Tripadvisor Suggestion Bot
 
-Sentiment Analysis is one of the major applications of NLP and has gained much attention in recent years. The main objective of this project is to collect data from Trip Advisor, a travel website to suggest the best accommodation based on the reviews given by previous customers.
+Sentiment Analysis is one of the major applications of NLP and has gained much attention in recent years. The main objective of this project is to collect data from Tripadvisor, a travel website to suggest the best accommodation based on the reviews given by previous customers.
 
-We start off by web scraping reviews on Trip Advisor based on input URLs to generate our own dataset. The data is then cleaned and processed for good, neutral and bad reviews by sentiment analysis, thus comparing different choices and suggesting the best one of the lot in order to help customers choose the best accommodation.
+We start off by web scraping reviews on Tripadvisor based on input URLs to generate our own dataset. The data is then cleaned and processed for good, neutral and bad reviews by sentiment analysis, thus comparing different choices and suggesting the best one of the lot in order to help customers choose the best accommodation.
 
 # Goals
 
@@ -32,7 +32,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 -   **Sahithi Chigurupati** - [csahithi](https://github.com/csahithi)
 -   **Jonnagadla Sunilkumar Dheeraj Kumar** - [JSdheerajkumar](https://github.com/JSdheerajkumar)
 
-See the full list of [contributors](https://github.com/aravindvnair99/Natural-Language-Processing-Project/graphs/contributors) who participated in this project and statistics.
+See the full list of [contributors](https://github.com/aravindvnair99/Tripadvisor-Suggestion-Bot/graphs/contributors) who participated in this project and statistics.
 
 # :heavy_exclamation_mark: Prerequisites aka requirements
 
@@ -40,15 +40,15 @@ Please read [Prerequisite](Prerequisite.md) file for details.
 
 # :bookmark: Releases
 
-View all versions [here](https://github.com/aravindvnair99/Natural-Language-Processing-Project/releases).
+View all versions [here](https://github.com/aravindvnair99/Tripadvisor-Suggestion-Bot/releases).
 
 # :scroll: Changelog
 
-Check the [changelog here](https://github.com/aravindvnair99/Natural-Language-Processing-Project/commits/master).
+Check the [changelog here](https://github.com/aravindvnair99/Tripadvisor-Suggestion-Bot/commits/master).
 
 # :memo: I found some bugs or issues. Where do I report?
 
-Report [here](https://github.com/aravindvnair99/Natural-Language-Processing-Project/issues/new/choose) in detail answering these questions:
+Report [here](https://github.com/aravindvnair99/Tripadvisor-Suggestion-Bot/issues/new/choose) in detail answering these questions:
 
 -   What steps did you take to make the bug appear?
 -   How can the bug be fixed? (In case you know)
@@ -58,4 +58,4 @@ Report [here](https://github.com/aravindvnair99/Natural-Language-Processing-Proj
 
 # :envelope: How do I contact the team?
 
-Check [here](https://github.com/aravindvnair99/Natural-Language-Processing-Project/graphs/contributors) for the list of contributors. Contact one of them through their profiles.
+Check [here](https://github.com/aravindvnair99/Tripadvisor-Suggestion-Bot/graphs/contributors) for the list of contributors. Contact one of them through their profiles.
