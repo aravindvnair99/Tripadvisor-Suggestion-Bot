@@ -9,9 +9,10 @@ from nltk.corpus import wordnet as wn
 from nltk.corpus import sentiwordnet as swn
 from nltk import sent_tokenize, word_tokenize, pos_tag
 from examplereplacer import AntonymReplacer
-from statistics import mean 
+from statistics import mean
 
 lemmatizer = WordNetLemmatizer()
+
 
 # Sentiment Analysis
 
@@ -84,7 +85,6 @@ def swn_polarity(text):
     return sentiment
 
 
-
 # Scraper
 
 
@@ -120,7 +120,6 @@ def post_soup(session, url, params, show=False):
 
 
 def scrape(count, url, lang='ALL'):
-
     # create session to keep all cookies (etc.) between requests
     session = requests.Session()
 
@@ -152,14 +151,14 @@ def parse(count, session, url):
     num_reviews = int(num_reviews)  # convert text into integer
     print('[parse] num_reviews ALL:', num_reviews)
 
-    url_template = url.replace('.html', '-or{}.html',)
+    url_template = url.replace('.html', '-or{}.html', )
     print('[parse] url_template:', url_template)
 
     items = []
 
     offset = 0
 
-    while(True):
+    while (True):
         subpage_url = url_template.format(offset)
 
         subpage_items = parse_reviews(count, session, subpage_url)
@@ -177,7 +176,6 @@ def parse(count, session, url):
 
 
 def get_reviews_ids(soup):
-
     items = soup.find_all('div', attrs={'data-reviewid': True})
 
     if items:
@@ -187,7 +185,6 @@ def get_reviews_ids(soup):
 
 
 def get_more(session, reviews_ids):
-
     url = 'https://www.tripadvisor.com/OverlayWidgetAjax?Mode=EXPANDED_HOTEL_REVIEWS_RESP&metaReferer=Hotel_Review'
 
     payload = {
@@ -262,7 +259,7 @@ def parse_reviews(count, session, url):
         items.append(item)
         # print('\n--- review ---\n')
         for key, val in item.items():
-            #print(' ', key, ':', val)
+            # print(' ', key, ':', val)
             if count == 1:
                 l1.append(val)
 
@@ -276,7 +273,6 @@ def write_in_csv(items, filename='results.csv',
                           'review date', 'contributions', 'helpful vote',
                           'user name', 'user location', 'rating'],
                  mode='w'):
-
     print('--- CSV ---')
 
     with io.open(filename, mode, encoding="utf-8") as csvfile:
@@ -292,7 +288,8 @@ DB_COLUMN = 'review_body'
 DB_COLUMN1 = 'review_date'
 
 start_urls = [
-    'https://www.tripadvisor.in/Hotel_Review-g297628-d10673745-Reviews-Hotel_Pent_House-Bengaluru_Bangalore_District_Karnataka.html', 'https://www.tripadvisor.in/Hotel_Review-g297628-d13391641-Reviews-Octave_Plaza_Hotel-Bengaluru_Bangalore_District_Karnataka.html'
+    'https://www.tripadvisor.in/Hotel_Review-g297628-d10673745-Reviews-Hotel_Pent_House-Bengaluru_Bangalore_District_Karnataka.html',
+    'https://www.tripadvisor.in/Hotel_Review-g297628-d13391641-Reviews-Octave_Plaza_Hotel-Bengaluru_Bangalore_District_Karnataka.html'
 ]
 
 lang = 'en'
@@ -303,7 +300,7 @@ headers = [
 ]
 
 count = 0
-
+name = []
 for url in start_urls:
     count += 1
     # get all reviews for 'url' and 'lang'
@@ -318,9 +315,10 @@ for url in start_urls:
         #         if i != "review_date":
         #             sentiment_scores(d[i], count)
         # For generating CSV uncomment this
-        # filename = url.split('Reviews-')[1][:-5] + '__' + lang
-        # print('filename:', filename)
-        # write_in_csv(items, filename + '.csv', headers, mode='w')
+        filename = url.split('Reviews-')[1][:-5] + '__' + lang
+        print('filename:', filename)
+        name.append((url.split('Reviews-')[1][:-44]).replace('_', ' '))
+        write_in_csv(items, filename + '.csv', headers, mode='w')
 
 print("\n\n\n\n")
 
@@ -338,6 +336,6 @@ m1 = mean(s1)
 m2 = (mean(s2))
 
 if m1 > m2:
-    print("The first hotel is better")
+    print(str(name[0]) + " is better than " + str(name[1]))
 else:
-    print("The second hotel is better")
+    print(str(name[1]) + " is better than " + str(name[0]))
