@@ -4,7 +4,15 @@ import csv
 import webbrowser
 import io
 from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
+from nltk.stem import WordNetLemmatizer
+from nltk.corpus import wordnet as wn
+from nltk.corpus import sentiwordnet as swn
+from nltk import sent_tokenize, word_tokenize, pos_tag
+from examplereplacer import AntonymReplacer
+from statistics import mean
+lemmatizer = WordNetLemmatizer()
 
+<<<<<<< HEAD
 # Sentiment Analysis
 
 
@@ -24,16 +32,79 @@ def sentiment_scores(sentence):
     print("sentence was rated as ", sentiment_dict['pos']*100, "% Positive")
     print("In function             ", count)
     print("Sentence Overall Rated As", end=" ")
+=======
 
-    # decide sentiment as positive, negative and neutral
-    if sentiment_dict['compound'] >= 0.05:
-        print("Positive")
+# Sentiment Analysis
+>>>>>>> 77f5614ac5b4cfa011708bc3f37488616fcecb9e
 
-    elif sentiment_dict['compound'] <= - 0.05:
-        print("Negative")
+def penn_to_wn(tag):
+    """
+    Convert between the PennTreebank tags to simple Wordnet tags
+    """
+    if tag.startswith('J'):
+        return wn.ADJ
+    elif tag.startswith('N'):
+        return wn.NOUN
+    elif tag.startswith('R'):
+        return wn.ADV
+    elif tag.startswith('V'):
+        return wn.VERB
+    return None
 
-    else:
-        print("Neutral")
+
+def swn_polarity(text):
+    """
+    Return a sentiment polarity: 0 = negative, 1 = positive
+    """
+
+    sentiment = 0.0
+    tokens_count = 0
+    b = ""
+    if "not" in text:
+        x = ""
+        raw_sentences = sent_tokenize(text)
+        for raw_sentence in raw_sentences:
+            tagged_sentence = pos_tag(word_tokenize(raw_sentence))
+
+            for word, tag in tagged_sentence:
+                wn_tag = penn_to_wn(tag)
+                if wn_tag in (wn.NOUN, wn.ADJ):
+                    x = x + " " + word
+                elif word == 'not':
+                    x = x + " " + word
+                else:
+                    continue
+        rep = AntonymReplacer()
+        a = rep.negreplace(x)
+        for i in range(len(a)):
+            b = b + " " + str(a[i])
+    if b == "":
+        b = text
+    raw_sentences = sent_tokenize(b)
+    for raw_sentence in raw_sentences:
+        tagged_sentence = pos_tag(word_tokenize(raw_sentence))
+
+        for word, tag in tagged_sentence:
+            wn_tag = penn_to_wn(tag)
+            if wn_tag not in (wn.NOUN, wn.ADJ, wn.ADV):
+                continue
+
+            lemma = lemmatizer.lemmatize(word, pos=wn_tag)
+            if not lemma:
+                continue
+
+            synsets = wn.synsets(lemma, pos=wn_tag)
+            if not synsets:
+                continue
+
+            # Take the first sense, the most common
+            synset = synsets[0]
+            swn_synset = swn.senti_synset(synset.name())
+
+            sentiment += swn_synset.pos_score() - swn_synset.neg_score()
+            tokens_count += 1
+    return sentiment
+
 
 # Scraper
 
@@ -70,7 +141,10 @@ def post_soup(session, url, params, show=False):
 
 
 def scrape(count, url, lang='ALL'):
+<<<<<<< HEAD
 
+=======
+>>>>>>> 77f5614ac5b4cfa011708bc3f37488616fcecb9e
     # create session to keep all cookies (etc.) between requests
     session = requests.Session()
 
@@ -84,7 +158,7 @@ def scrape(count, url, lang='ALL'):
 def parse(count, session, url):
     '''Get number of reviews and start getting subpages with reviews'''
 
-    print('[parse] url:', url)
+    print('\nParsing URL:', url)
 
     soup = get_soup(session, url)
 
@@ -100,16 +174,16 @@ def parse(count, session, url):
     # num_reviews = num_reviews.replace(',', '')
     # print("num_reviews 3 is", num_reviews)
     num_reviews = int(num_reviews)  # convert text into integer
-    print('[parse] num_reviews ALL:', num_reviews)
+    print('\nTotal number of reviews to parse:', num_reviews)
 
-    url_template = url.replace('.html', '-or{}.html',)
-    print('[parse] url_template:', url_template)
+    url_template = url.replace('.html', '-or{}.html', )
+    # print('[parse] url_template:', url_template)
 
     items = []
 
     offset = 0
 
-    while(True):
+    while (True):
         subpage_url = url_template.format(offset)
 
         subpage_items = parse_reviews(count, session, subpage_url)
@@ -127,17 +201,15 @@ def parse(count, session, url):
 
 
 def get_reviews_ids(soup):
-
     items = soup.find_all('div', attrs={'data-reviewid': True})
 
     if items:
         reviews_ids = [x.attrs['data-reviewid'] for x in items][::1]
-        print('[get_reviews_ids] data-reviewid:', reviews_ids)
+        # print('[get_reviews_ids] data-reviewid:', reviews_ids)
         return reviews_ids
 
 
 def get_more(session, reviews_ids):
-
     url = 'https://www.tripadvisor.com/OverlayWidgetAjax?Mode=EXPANDED_HOTEL_REVIEWS_RESP&metaReferer=Hotel_Review'
 
     payload = {
@@ -162,7 +234,7 @@ l2 = []
 def parse_reviews(count, session, url):
     '''Get all reviews from one page'''
 
-    print('[parse_reviews] url:', url)
+    # print('[parse_reviews] url:', url)
 
     soup = get_soup(session, url)
 
@@ -212,14 +284,12 @@ def parse_reviews(count, session, url):
         items.append(item)
         # print('\n--- review ---\n')
         for key, val in item.items():
-            #print(' ', key, ':', val)
+            # print(' ', key, ':', val)
             if count == 1:
                 l1.append(val)
 
             elif count == 2:
                 l2.append(val)
-    l1[0:] = ['. '.join(l1[0:])]
-    l2[0:] = ['. '.join(l2[0:])]
     return items
 
 
@@ -228,7 +298,6 @@ def write_in_csv(items, filename='results.csv',
                           'review date', 'contributions', 'helpful vote',
                           'user name', 'user location', 'rating'],
                  mode='w'):
-
     print('--- CSV ---')
 
     with io.open(filename, mode, encoding="utf-8") as csvfile:
@@ -244,7 +313,8 @@ DB_COLUMN = 'review_body'
 DB_COLUMN1 = 'review_date'
 
 start_urls = [
-    'https://www.tripadvisor.in/Hotel_Review-g297628-d13391641-Reviews-Octave_Plaza_Hotel-Bengaluru_Bangalore_District_Karnataka.html', 'https://www.tripadvisor.in/Hotel_Review-g297628-d10673745-Reviews-Hotel_Pent_House-Bengaluru_Bangalore_District_Karnataka.html'
+    'https://www.tripadvisor.in/Hotel_Review-g297628-d10673745-Reviews-Hotel_Pent_House-Bengaluru_Bangalore_District_Karnataka.html',
+    'https://www.tripadvisor.in/Hotel_Review-g297628-d13391641-Reviews-Octave_Plaza_Hotel-Bengaluru_Bangalore_District_Karnataka.html'
 ]
 
 lang = 'en'
@@ -255,7 +325,7 @@ headers = [
 ]
 
 count = 0
-
+name = []
 for url in start_urls:
     count += 1
     # get all reviews for 'url' and 'lang'
@@ -264,16 +334,31 @@ for url in start_urls:
     if not items:
         print('No reviews')
     else:
-        print("\n\nNo of accomodations to compare: ", count)
+        print("\nNo of accommodations to compare: ", count)
         # for d in items:
         #     for i in d:
         #         if i != "review_date":
         #             sentiment_scores(d[i], count)
-        # For generating CSV uncomment this
-        # filename = url.split('Reviews-')[1][:-5] + '__' + lang
+        filename = url.split('Reviews-')[1][:-5] + '__' + lang
         # print('filename:', filename)
+        # For generating CSV uncomment this
+        name.append((url.split('Reviews-')[1][:-44]).replace('_', ' '))
         # write_in_csv(items, filename + '.csv', headers, mode='w')
 
-print("\n\n\n\n")
-print(sentiment_scores(l1[0]))
-print(sentiment_scores(l2[0]))
+s1 = []
+s2 = []
+print("\nLength of l1", len(l1))
+print("\nLength of l2", len(l2))
+for i in range(len(l1)):
+    num = swn_polarity(l1[i])
+    s1.append(num)
+for i in range(len(l2)):
+    num = swn_polarity(l2[i])
+    s2.append(num)
+m1 = mean(s1)
+m2 = (mean(s2))
+
+if m1 > m2:
+    print('\n' + str(name[0]) + " is better than " + str(name[1]))
+else:
+    print('\n' + str(name[1]) + " is better than " + str(name[0]))

@@ -2,9 +2,8 @@
 
 -   Python
 -   pip
--   NLTK
 
-Check [here](https://github.com/aravindvnair99/Natural-Language-Processing-Project/network/dependencies) for the remaining prerequisites.
+Check [here](https://github.com/aravindvnair99/Tripadvisor-Suggestion-Bot/network/dependencies) for the remaining prerequisites.
 
 # Recommendations:
 
