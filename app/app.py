@@ -10,7 +10,6 @@ from nltk.corpus import sentiwordnet as swn
 from nltk import sent_tokenize, word_tokenize, pos_tag
 from examplereplacer import AntonymReplacer
 from statistics import mean
-
 lemmatizer = WordNetLemmatizer()
 
 
@@ -133,7 +132,7 @@ def scrape(count, url, lang='ALL'):
 def parse(count, session, url):
     '''Get number of reviews and start getting subpages with reviews'''
 
-    print('[parse] url:', url)
+    print('\nParsing URL:', url)
 
     soup = get_soup(session, url)
 
@@ -149,10 +148,10 @@ def parse(count, session, url):
     # num_reviews = num_reviews.replace(',', '')
     # print("num_reviews 3 is", num_reviews)
     num_reviews = int(num_reviews)  # convert text into integer
-    print('[parse] num_reviews ALL:', num_reviews)
+    print('\nTotal number of reviews to parse:', num_reviews)
 
     url_template = url.replace('.html', '-or{}.html', )
-    print('[parse] url_template:', url_template)
+    # print('[parse] url_template:', url_template)
 
     items = []
 
@@ -180,7 +179,7 @@ def get_reviews_ids(soup):
 
     if items:
         reviews_ids = [x.attrs['data-reviewid'] for x in items][::1]
-        print('[get_reviews_ids] data-reviewid:', reviews_ids)
+        # print('[get_reviews_ids] data-reviewid:', reviews_ids)
         return reviews_ids
 
 
@@ -209,7 +208,7 @@ l2 = []
 def parse_reviews(count, session, url):
     '''Get all reviews from one page'''
 
-    print('[parse_reviews] url:', url)
+    # print('[parse_reviews] url:', url)
 
     soup = get_soup(session, url)
 
@@ -309,23 +308,21 @@ for url in start_urls:
     if not items:
         print('No reviews')
     else:
-        print("\n\nNo of accommodations to compare: ", count)
+        print("\nNo of accommodations to compare: ", count)
         # for d in items:
         #     for i in d:
         #         if i != "review_date":
         #             sentiment_scores(d[i], count)
-        # For generating CSV uncomment this
         filename = url.split('Reviews-')[1][:-5] + '__' + lang
-        print('filename:', filename)
+        # print('filename:', filename)
+        # For generating CSV uncomment this
         name.append((url.split('Reviews-')[1][:-44]).replace('_', ' '))
-        write_in_csv(items, filename + '.csv', headers, mode='w')
-
-print("\n\n\n\n")
+        # write_in_csv(items, filename + '.csv', headers, mode='w')
 
 s1 = []
 s2 = []
-print("Length of l1", len(l1))
-print("Length of l2", len(l2))
+print("\nLength of l1", len(l1))
+print("\nLength of l2", len(l2))
 for i in range(len(l1)):
     num = swn_polarity(l1[i])
     s1.append(num)
@@ -336,6 +333,6 @@ m1 = mean(s1)
 m2 = (mean(s2))
 
 if m1 > m2:
-    print(str(name[0]) + " is better than " + str(name[1]))
+    print('\n' + str(name[0]) + " is better than " + str(name[1]))
 else:
-    print(str(name[1]) + " is better than " + str(name[0]))
+    print('\n' + str(name[1]) + " is better than " + str(name[0]))
