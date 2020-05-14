@@ -1,10 +1,6 @@
-# import SentimentIntensityAnalyzer class
-# from vaderSentiment.vaderSentiment module.
 from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
-
-# function to print sentiments
-# of the sentence.
-
+from nltk.corpus import stopwords
+from nltk.tokenize import word_tokenize
 
 def sentiment_scores(sentence):
 
@@ -37,17 +33,24 @@ def sentiment_scores(sentence):
 # Driver code
 if __name__ == "__main__":
 
-    print("\n1st statement :")
-    sentence = "Geeks For Geeks is the best portal for \
-        the computer science engineering students."
+    # print("\n1st statement :")
+    # sentence = "Geeks For Geeks is the best portal for \
+    #     the computer science engineering students."
 
-    # function calling
-    sentiment_scores(sentence)
+    # # function calling
+    # sentiment_scores(sentence)
 
-    print("\n2nd Statement :")
-    sentence = "study is going on as usual"
-    sentiment_scores(sentence)
-
+    # print("\n2nd Statement :")
+    # sentence = "study is going on as usual"
+    # sentiment_scores(sentence)
+    filtered_sentence = []
     print("\n3rd Statement :")
-    sentence = "I am vey sad today."
-    sentiment_scores(sentence)
+    sentence = "Put some sentence here."
+    stop_words = set(stopwords.words('english'))
+    word_tokens = word_tokenize(sentence)
+    for w in word_tokens:
+        if w not in stop_words:
+            filtered_sentence.append(w)
+    filtered_sentence[0:] = [' '.join(filtered_sentence[0:])]
+    print(filtered_sentence)
+    sentiment_scores(filtered_sentence)
