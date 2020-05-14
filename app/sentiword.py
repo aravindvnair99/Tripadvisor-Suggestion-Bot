@@ -13,13 +13,14 @@ def penn_to_wn(tag):
     """
     if tag.startswith('J'):
         return wn.ADJ
-    elif tag.startswith('N'):
+    if tag.startswith('N'):
         return wn.NOUN
-    elif tag.startswith('R'):
+    if tag.startswith('R'):
         return wn.ADV
-    elif tag.startswith('V'):
+    if tag.startswith('V'):
         return wn.VERB
     return None
+
 
 def swn_polarity(text):
     """

@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 import re
+=======
+>>>>>>> b3f1054ff5f78639f335e07973a17f424ca69e5c
 from nltk.corpus import wordnet
 from nltk.tokenize import word_tokenize
 

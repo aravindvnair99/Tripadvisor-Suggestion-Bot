@@ -13,6 +13,7 @@ from statistics import mean
 lemmatizer = WordNetLemmatizer()
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 # Sentiment Analysis
 
 
@@ -105,6 +106,79 @@ def swn_polarity(text):
             tokens_count += 1
     return sentiment
 
+=======
+
+# Sentiment Analysis
+
+def penn_to_wn(tag):
+    """
+    Convert between the PennTreebank tags to simple Wordnet tags
+    """
+    if tag.startswith('J'):
+        return wn.ADJ
+    elif tag.startswith('N'):
+        return wn.NOUN
+    elif tag.startswith('R'):
+        return wn.ADV
+    elif tag.startswith('V'):
+        return wn.VERB
+    return None
+
+
+def swn_polarity(text):
+    """
+    Return a sentiment polarity: 0 = negative, 1 = positive
+    """
+
+    sentiment = 0.0
+    tokens_count = 0
+    b = ""
+    if "not" in text:
+        x = ""
+        raw_sentences = sent_tokenize(text)
+        for raw_sentence in raw_sentences:
+            tagged_sentence = pos_tag(word_tokenize(raw_sentence))
+
+            for word, tag in tagged_sentence:
+                wn_tag = penn_to_wn(tag)
+                if wn_tag in (wn.NOUN, wn.ADJ):
+                    x = x + " " + word
+                elif word == 'not':
+                    x = x + " " + word
+                else:
+                    continue
+        rep = AntonymReplacer()
+        a = rep.negreplace(x)
+        for i in range(len(a)):
+            b = b + " " + str(a[i])
+    if b == "":
+        b = text
+    raw_sentences = sent_tokenize(b)
+    for raw_sentence in raw_sentences:
+        tagged_sentence = pos_tag(word_tokenize(raw_sentence))
+
+        for word, tag in tagged_sentence:
+            wn_tag = penn_to_wn(tag)
+            if wn_tag not in (wn.NOUN, wn.ADJ, wn.ADV):
+                continue
+
+            lemma = lemmatizer.lemmatize(word, pos=wn_tag)
+            if not lemma:
+                continue
+
+            synsets = wn.synsets(lemma, pos=wn_tag)
+            if not synsets:
+                continue
+
+            # Take the first sense, the most common
+            synset = synsets[0]
+            swn_synset = swn.senti_synset(synset.name())
+
+            sentiment += swn_synset.pos_score() - swn_synset.neg_score()
+            tokens_count += 1
+    return sentiment
+
+>>>>>>> b3f1054ff5f78639f335e07973a17f424ca69e5c
 
 # Scraper
 
@@ -142,9 +216,12 @@ def post_soup(session, url, params, show=False):
 
 def scrape(count, url, lang='ALL'):
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 =======
 >>>>>>> 77f5614ac5b4cfa011708bc3f37488616fcecb9e
+=======
+>>>>>>> b3f1054ff5f78639f335e07973a17f424ca69e5c
     # create session to keep all cookies (etc.) between requests
     session = requests.Session()
 

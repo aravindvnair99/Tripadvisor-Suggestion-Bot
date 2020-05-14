@@ -81,5 +81,9 @@ num = swn_polarity("movie is not at all clear")
 print(num)
 num1 = swn_polarity("movie is pretty good")
 print(num1)
+<<<<<<< HEAD
 num2 = swn_polarity("This hotel has everything needed. We are from Australia and we loved our stay. Room was simple clean and we choose the partial ocean view room it was a great view. And pool was great. Free filtered water whenever you want and great location. Shops on the same street, park across the road and beach across the road. Tour buses stop out front. Sounds to good to be true. Staff were lovely. Canâ€™t say this about many hotels but this was a great stay for us. Our room view. ")
+=======
+num2 = swn_polarity("Put some sentence here.")
+>>>>>>> b3f1054ff5f78639f335e07973a17f424ca69e5c
 print(num2)
