@@ -1,4 +1,4 @@
-# Tripadvisor Suggestion Bot
+# Tripadvisor Suggestion Bot ![](https://komarev.com/ghpvc/?username=AravindVNair99&label=Views)
 
 Sentiment Analysis is one of the major applications of NLP and has gained much attention in recent years. The main objective of this project is to collect data from Tripadvisor, a travel website to suggest the best accommodation based on the reviews given by previous customers.
 
