@@ -6,11 +6,11 @@ chardet==3.0.4
 click==7.1.2
 idna==2.9
 joblib==0.14.1
-nltk==3.6
+nltk==3.6.4
 pycodestyle==2.6.0
 regex==2020.4.4
 requests==2.23.0
 soupsieve==2.0
 tqdm==4.45.0
-urllib3==1.25.9
+urllib3==1.26.5
 vaderSentiment==3.3.1
